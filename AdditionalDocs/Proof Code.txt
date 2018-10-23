@@ -1,0 +1,148 @@
+/*
+- Remember to define these classes, include headers, etc.
+#ifndef MOVES_H
+#define MOVES_H
+#include <vector>
+#include <algorithm>
+#include < any others >
+/*
+
+// Try to figure out how to read below class data from CSV
+
+Class Move
+{
+  public:
+   stdd:str Command
+   stdd:str HitLevel // l,m,h == 1,2,3 
+   stdd:str Damage
+   int OnHit
+   int OnBlock
+   stdd:str CH_Properties //CS,KND,Launch, none == 1,2,3,4,
+};
+
+Class PowerCrush//inherit from class.move
+{
+  public:
+  stdd:str PowerCrush //flag y or n
+};
+
+Class Homing //inherit from class.move
+{
+  public:
+  stdd:str Homing //flag y or n
+};
+
+Class TailSpin //inherit from class.move
+{
+  public:
+  stdd:str TailSpin //flag y or n
+};
+
+Class RageArts //inherit from class.move
+{
+  public:
+  stdd:str Rage //flag y or n
+};
+
+Class SpecialMoves //inherit from class.move
+{
+  public:
+  stdd:str special //flag y or n
+};
+
+/*
+Find better way to sort this - Also sort by OnBlock + OnHit <=10
+*/
+
+bool sortByCommand(move &A, move &B)
+{
+  return (A.command < B.command)
+}
+
+bool sortByHitLevel(move &A, move &B)
+{
+  return (A.HitLevel < B.HitLevel)
+}
+
+bool sortByDamage(move &A, move &B)
+{
+  return (A.Damage < B.Damage)
+}
+
+bool sortByOnHit(move &A, move &B)
+{
+  return (A.OnHit < B.OnHit)
+}
+
+bool sortByOnBlock(move &A, move &B)
+{
+  return (A.OnBlock < B.OnBlock)
+}
+
+bool sortByCH_Properties(move &A, move &B)
+{
+  return (A.CH_Properties < B.CH_Properties)
+}
+
+int main ()
+{
+  int sortmethod;
+  Command[] = {}; // CSV Data import
+  HitLevel[] = {}; // CSV Data import
+  Damage[] = {}; // CSV Data import
+  OnHit[] = {}; // CSV Data import
+  OnBlock[] = {}; // CSV Data import
+  CH_Properties[] = {}; // CSV Data import
+  Special_Move[] = {}; // CSV Data import
+  Properties[] = {}; // CSV Data import
+  Rage[] = {}; // CSV Data import
+
+  vector<moves> movelist;
+  move move; //move class objects - probably moveNo. would be best?
+
+*/
+also there should be limitng search criteria to only display certain moves/properties? Bot for sorting and outputs, yeah?
+/*
+  for (int i=1; < i =148; i++) //not sure if this would work correctly?
+  {
+  move.Command = Command[i] // think this would be str for some data fields?
+  move.HitLevel =HitLevel[i];
+  move.Damage = Damage[i];
+  move.OnHit = OnHit[i];
+  move.OnBlock = OnBlock[i];
+  move.CH_Properties = CH_Properties[i];
+  move.Special_Move = Special_Move[i];
+  move.Properties = Properties[i];
+  move.Rage = Rage[i];
+
+  movelist.push_back(move);
+  }
+
+  for (int i=1; < i =148; i++) //could maybe make this a separate function?
+  {
+    cout << movelist[i].command << " " << movelist[i].HitLevel << endl;
+    //(add movelist[i].etc)
+  }
+  cout << endl;
+
+  For (other sorting methods) //as per method
+  {
+  }
+
+  cout << "Search by 1) Command, 2) Hit Level, 3) Damage, .. 9) Rage Arts :"
+*/
+this above line also needs sub menus for certain options.
+/*
+
+  cin>>sortmethod;
+  if(sortmehtod == 1) // should be a better loop here?
+  {
+    movelist.sort(sortby...);
+  }
+
+  For (other sorting methods) //as required by method
+  {
+  }
+
+  cout << endl.
+}
