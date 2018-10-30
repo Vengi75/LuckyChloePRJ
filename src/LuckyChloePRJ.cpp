@@ -13,7 +13,11 @@
 #include <string>
 #include <algorithm>
 #include <sstream>
+#include <ostream>
 
+class Move;
+class Damage_Factory;
+class factory;
 
 class Move
 {
@@ -35,12 +39,13 @@ class Move
 
    std::string Command;
    std::string HitLevel; // l,m,h == 1,2,3
-   std::string Damage; //remember to do string to int conversion
+   //damage been made into subclass
    std::string OnHit; //remember to do string to int conversion
    std::string OnBlock; //remember to do string to int conversion
    std::string CH_Properties; //CS,KND,Launch, none == 1,2,3,4,
 
    virtual void whoAmI() = 0;
+   virtual int sort() = 0;
 
    virtual ~Move(){};
 };
@@ -51,6 +56,37 @@ class factory
 virtual Move *create_Move(const std::vector<std::string> &vec) = 0; //make one for each special class
 
 virtual ~factory(){};
+};
+
+class Damage : public Move
+{
+public:
+  int dmgString;
+  Damage (const std::vector<std::string> &vec)
+  :Move(vec)
+    {
+    dmgString = std::stoi(vec[3]);  //correct element of vector goes here - ??
+    }
+
+  void whoAmI()
+  {
+	  std::cout<<"I'm Damage object"<<std::endl;
+  }
+
+  virtual int sort()
+  {
+	  return dmgString;
+  }
+};
+
+class Damage_Factory : public factory
+{
+  public:
+    virtual Move *create_Move(const std::vector<std::string> &vec)
+    {
+      return new Damage(vec);
+    }
+    virtual ~Damage_Factory(){};
 };
 
 class PowerCrush : public Move
@@ -67,6 +103,8 @@ public:
   {
 	  std::cout<<"I'm PowerCrush object"<<std::endl;
   }
+
+  virtual int sort(){}
 };
 
 class PowerCrush_Factory : public factory //inherit from class.move
@@ -94,7 +132,54 @@ public:
   {
 	  std::cout<<"I'm Homing object"<<std::endl;
   }
+
+  virtual int sort(){}
 };
+
+class fullLineData
+{
+  public:
+	fullLineData (const std::vector<std::string> &vec) : moveData{vec}
+  {
+		Damage_Factory dmgFactory{};
+		Move* ptr{dmgFactory.create_Move(moveData)};
+		MoveVecPtr.push_back(ptr);
+  }
+
+	fullLineData (const fullLineData &data) : moveData{data.moveData},
+			MoveVecPtr{data.MoveVecPtr}
+	{
+	}
+
+	fullLineData& operator=(const fullLineData& data)
+	{
+		if(this == &data)
+			return *this;
+
+		moveData = data.moveData;
+		MoveVecPtr = data.MoveVecPtr;
+		return *this;
+	}
+
+
+  int sortByDamage()
+  {
+	  return MoveVecPtr[0]->sort();
+  }
+
+	std::vector<std::string> moveData;
+	std::vector<Move*> MoveVecPtr;
+};
+
+
+std::ostream& operator << (std::ostream& os, const fullLineData& data)
+{
+	for( auto & lineElement : data.moveData){
+		  os << lineElement << ' ';
+	}
+
+	return os;
+}
 
 class Homing_Factory : public factory //inherit from class.move
 {
@@ -121,6 +206,8 @@ public:
     {
   	  std::cout<<"I'm TailSpin object"<<std::endl;
     }
+
+  virtual int sort(){}
 };
 
 class TailSpin_Factory : public factory //inherit from class.move
@@ -150,6 +237,8 @@ public:
     {
   	  std::cout<<"I'm RageArt object"<<std::endl;
     }
+
+  virtual int sort(){}
 };
 
 class RageArt_Factory : public factory //inherit from class.move
@@ -178,6 +267,8 @@ public:
     {
   	  std::cout<<"I'm SpecialMove object"<<std::endl;
     }
+
+  virtual int sort(){}
 };
 
 class specialMove_Factory : public factory //inherit from class.move
@@ -189,6 +280,19 @@ class specialMove_Factory : public factory //inherit from class.move
     }
     virtual ~specialMove_Factory(){};
 };
+
+void sortByDamage(std::vector<fullLineData>& vectorOfLines)
+{
+	std::sort(vectorOfLines.begin(),vectorOfLines.end(),[](fullLineData &a, fullLineData &b)->bool{
+		return (a.sortByDamage() < b.sortByDamage());
+	});
+
+	for(auto line : vectorOfLines)
+	{
+		std::cout<<line<<std::endl;
+	}
+}
+
 
 class CSVReader
 {
@@ -319,6 +423,8 @@ std::vector<std::vector<std::string> > CSVReader::getData()
 };
 
 
+
+
 int main()
 {
 	CSVReader cSVReader{"Character_Data.csv"};
@@ -343,6 +449,16 @@ int main()
 
 	specialMove_Factory specFactory {};
 	Move* specPtr;
+
+	std::vector<fullLineData> vectorOfLines{};
+	vectorOfLines.push_back(fullLineData{moveListData[1]});
+	vectorOfLines.push_back(fullLineData{moveListData[2]});
+	vectorOfLines.push_back(fullLineData{moveListData[3]});
+	vectorOfLines.push_back(fullLineData{moveListData[4]});
+	vectorOfLines.push_back(fullLineData{moveListData[5]});
+
+	sortByDamage(vectorOfLines);
+
 
 for(auto & singleLine : moveListData)
 	{
