@@ -12,6 +12,10 @@
 Class Move
 {
   public:
+  Move (std::vector<std::string> vec) 
+   {
+    
+    }
    stdd:str Command
    stdd:str HitLevel // l,m,h == 1,2,3 
    stdd:str Damage
@@ -20,16 +24,29 @@ Class Move
    stdd:str CH_Properties //CS,KND,Launch, none == 1,2,3,4,
 };
 
-Class PowerCrush//inherit from class.move
+Class PowerCrush_Factory : public Factory //inherit from class.move
 {
-  public:
-  stdd:str PowerCrush //flag y or n
+  public: move
+    virtual Move *create_Move(const std::vector<std::string> &vec)
+    {
+    return new PoweCrush(vec);
+    }
 };
+
+class PowerCrush : public move
+{
+str crushString
+PowerCrush (std::vector<std::string> &vec)
+:move(vec){
+std::vector<std::string vec (7);  //correct element of vector goes here - ??
+}
+}
 
 Class Homing //inherit from class.move
 {
   public:
   stdd:str Homing //flag y or n
+  
 };
 
 Class TailSpin //inherit from class.move
@@ -145,4 +162,16 @@ this above line also needs sub menus for certain options.
   }
 
   cout << endl.
+}
+
+/*
+for(auto & lines : dataList)
+    {lines.back() == "y"
+    		Move.build(lines);
+*/
+
+class factory
+{
+ public:
+virtual Move *create_Move(const std::vector<std::string> &vec) = 0; //make one for each special class
 }
