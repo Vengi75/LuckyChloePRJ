@@ -74,101 +74,121 @@ class PowerCrush_Factory : public factory //inherit from class.move
   public:
     virtual Move *create_Move(const std::vector<std::string> &vec)
     {
-    return new PowerCrush(vec); //remember to add forward declarations
+    return new PowerCrush(vec);
     }
     virtual ~PowerCrush_Factory(){};
 };
 
 
-/*
+
 class Homing : public Move
 {
+public:
   std::string homeString;
-  Homing (std::vector<std::string> &vec)
+  Homing (const std::vector<std::string> &vec)
   :Move(vec)
     {
-    std::vector<std::string> vec (7);  //correct element of vector goes here - ??
+    homeString = vec [7];
     }
+  void whoAmI()
+  {
+	  std::cout<<"I'm Homing object"<<std::endl;
+  }
 };
 
 class Homing_Factory : public factory //inherit from class.move
 {
-  public: move;
+  public:
     virtual Move *create_Move(const std::vector<std::string> &vec)
     {
-    return new Homing(vec); //remember to add forward declarations
+    return new Homing(vec);
     }
-    virtual ~Homing_Factory();
+    virtual ~Homing_Factory(){};
 };
 
 
 class TailSpin : public Move
 {
+public:
   std::string tailString;
-  TailSpin (std::vector<std::string> &vec)
+  TailSpin (const std::vector<std::string> &vec)
   :Move(vec)
     {
-    std::vector<std::string> vec (7);  //correct element of vector goes here - ??
+    tailString = vec [7];
+    }
+
+  void whoAmI()
+    {
+  	  std::cout<<"I'm TailSpin object"<<std::endl;
     }
 };
 
 class TailSpin_Factory : public factory //inherit from class.move
 {
-  public: move;
+  public:
     virtual Move *create_Move(const std::vector<std::string> &vec)
     {
-    return new TailSpin(vec); //remember to add forward declarations
+    return new TailSpin(vec);
     }
-    virtual ~TailSpin_Factory();
+    virtual ~TailSpin_Factory(){};
 };
 
 
- * Remember to only generate rageArts objs if Rage vector == 'y'
-*/
-/*
+ // Remember to only generate rageArts objs if Rage vector == 'y'
+
+
 class RageArt : public Move
 {
+public:
   std::string rageString;
-  RageArt (std::vector<std::string> &vec)
+  RageArt (const std::vector<std::string> &vec)
   :Move(vec)
     {
-    std::vector<std::string> vec (8);  //correct element of vector goes here - ??
+    rageString = vec [8];
+    }
+  void whoAmI()
+    {
+  	  std::cout<<"I'm RageArt object"<<std::endl;
     }
 };
 
 class RageArt_Factory : public factory //inherit from class.move
 {
-  public: move;
+  public:
     virtual Move *create_Move(const std::vector<std::string> &vec)
     {
-    return new RageArt(vec); //remember to add forward declarations
+    return new RageArt(vec);
     }
-    virtual ~RageArt_Factory();
+    virtual ~RageArt_Factory(){};
 };
-*/
-/*
- * Remember to only generate special objs if special vector == 'y'
-*/
-/*
+
+ // Remember to only generate special objs if special vector == 'y'
+
 class specialMove : public Move
 {
+public:
   std::string specialString;
-  specialMove (std::vector<std::string> &vec)
+  specialMove (const std::vector<std::string> &vec)
   :Move(vec)
     {
-    std::vector<std::string> vec (6);  //correct element of vector goes here - ??
+    specialString = vec [6];
+    }
+
+  void whoAmI()
+    {
+  	  std::cout<<"I'm SpecialMove object"<<std::endl;
     }
 };
 
 class specialMove_Factory : public factory //inherit from class.move
 {
-  public: move;
+  public:
     virtual Move *create_Move(const std::vector<std::string> &vec)
     {
-    return new specialMove(vec); //remember to add forward declarations
+    return new specialMove(vec);
     }
-    virtual ~specialMove_Factory();
-};*/
+    virtual ~specialMove_Factory(){};
+};
 
 class CSVReader
 {
@@ -309,7 +329,22 @@ int main()
 
 	Move* powerCrushPtr{};
 
-	for(auto & singleLine : moveListData)
+	Homing_Factory hFactory {};
+
+	Move* homingPtr{};
+
+	TailSpin_Factory tsFactory {};
+
+	Move* tailSpinPtr{};
+
+	RageArt_Factory raFactory {};
+
+	Move* ragePtr;
+
+	specialMove_Factory specFactory {};
+	Move* specPtr;
+
+for(auto & singleLine : moveListData)
 	{
     	if(singleLine[8] == "Power crush")
 		{
@@ -323,6 +358,75 @@ int main()
 	  powerCrushPtr->whoAmI();
 	}
 	delete powerCrushPtr;
+
+for(auto & singleLine : moveListData)
+		{
+		  if(singleLine[8] == "Homing")
+			{
+				homingPtr = hFactory.create_Move(singleLine);
+				std::cout<<homingPtr<<std::endl;
+			}
+
+	  }
+
+		if(homingPtr != nullptr)
+		{
+		  homingPtr->whoAmI();
+		}
+		delete homingPtr;
+
+for(auto & singleLine : moveListData)
+			{
+			  if(singleLine[8] == "Tail spin")
+				{
+					tailSpinPtr = tsFactory.create_Move(singleLine);
+					std::cout<<tailSpinPtr<<std::endl;
+				}
+		    }
+
+			if(tailSpinPtr != nullptr)
+			{
+			  tailSpinPtr->whoAmI();
+			}
+			delete tailSpinPtr;
+
+for (auto & singleLine : moveListData)
+  {
+    if (singleLine [9] == "y")
+    {
+    	ragePtr = raFactory.create_Move(singleLine);
+    	std::cout<<ragePtr<<std::endl;
+    }
+    else
+    {
+    	//make base class move
+    }
+
+    if(ragePtr != nullptr)
+    	{
+    	  ragePtr->whoAmI();
+    	}
+    	delete ragePtr;
+  }
+
+for (auto & singleLine : moveListData)
+  {
+    if (singleLine [6] == "y")
+    {
+    	specPtr = specFactory.create_Move(singleLine);
+    	std::cout<<specPtr<<std::endl;
+    }
+    else
+    {
+    	//make base class move
+    }
+
+    if(specPtr != nullptr)
+    	{
+    	  specPtr->whoAmI();
+    	}
+    	delete ragePtr;
+  }
 
     std::getchar();
     return 0;
