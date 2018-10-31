@@ -21,41 +21,26 @@ class factory;
 
 class Move
 {
-
-/*
-  private:
-  PowerCrush ps;
-  Homing ps;
-  TailSpin ps;
-  RageArts ps;
-  SpecialMoves ps;
-*/
-
   public:
-	 Move (std::vector<std::string> vec)
-	  {
+  Move (std::vector<std::string> vec){}
 
-	  }
+    std::string Command;
+    std::string HitLevel; // l,m,h == 1,2,3
+    //damage been made into subclass
+    std::string OnHit; //remember to do string to int conversion
+    std::string OnBlock; //remember to do string to int conversion
+    std::string CH_Properties; //CS,KND,Launch, none == 1,2,3,4,
 
-   std::string Command;
-   std::string HitLevel; // l,m,h == 1,2,3
-   //damage been made into subclass
-   std::string OnHit; //remember to do string to int conversion
-   std::string OnBlock; //remember to do string to int conversion
-   std::string CH_Properties; //CS,KND,Launch, none == 1,2,3,4,
-
-   virtual void whoAmI() = 0;
-   virtual int sort() = 0;
-
-   virtual ~Move(){};
+    virtual void whoAmI() = 0;
+    virtual int sort() = 0;
+    virtual ~Move(){};
 };
 
 class factory
 {
- public:
-virtual Move *create_Move(const std::vector<std::string> &vec) = 0; //make one for each special class
-
-virtual ~factory(){};
+  public:
+    virtual Move *create_Move(const std::vector<std::string> &vec) = 0;
+    virtual ~factory(){};
 };
 
 class Damage : public Move
@@ -65,7 +50,7 @@ public:
   Damage (const std::vector<std::string> &vec)
   :Move(vec)
     {
-    dmgString = std::stoi(vec[3]);  //correct element of vector goes here - ??
+    dmgString = std::stoi(vec[3]);  //correct element of vector goes here
     }
 
   void whoAmI()
@@ -96,7 +81,7 @@ public:
   PowerCrush (const std::vector<std::string> &vec)
   :Move(vec)
     {
-    crushString = vec [7];  //correct element of vector goes here - ??
+    crushString = vec [7];
     }
 
   void whoAmI()
@@ -107,7 +92,7 @@ public:
   virtual int sort(){}
 };
 
-class PowerCrush_Factory : public factory //inherit from class.move
+class PowerCrush_Factory : public factory
 {
   public:
     virtual Move *create_Move(const std::vector<std::string> &vec)
@@ -181,7 +166,7 @@ std::ostream& operator << (std::ostream& os, const fullLineData& data)
 	return os;
 }
 
-class Homing_Factory : public factory //inherit from class.move
+class Homing_Factory : public factory
 {
   public:
     virtual Move *create_Move(const std::vector<std::string> &vec)
@@ -210,7 +195,7 @@ public:
   virtual int sort(){}
 };
 
-class TailSpin_Factory : public factory //inherit from class.move
+class TailSpin_Factory : public factory
 {
   public:
     virtual Move *create_Move(const std::vector<std::string> &vec)
@@ -241,7 +226,7 @@ public:
   virtual int sort(){}
 };
 
-class RageArt_Factory : public factory //inherit from class.move
+class RageArt_Factory : public factory
 {
   public:
     virtual Move *create_Move(const std::vector<std::string> &vec)
@@ -271,7 +256,7 @@ public:
   virtual int sort(){}
 };
 
-class specialMove_Factory : public factory //inherit from class.move
+class specialMove_Factory : public factory
 {
   public:
     virtual Move *create_Move(const std::vector<std::string> &vec)
@@ -451,15 +436,26 @@ int main()
 	Move* specPtr;
 
 	std::vector<fullLineData> vectorOfLines{};
+
+	/*
+	for ((moveListData* >=0); (moveListData* <=148) ; (moveListData*)++)
+	{
+		vectorOfLines.push_back(fullLineData{moveListData[*moveListData]});
+	}
+	*/
+
+
 	vectorOfLines.push_back(fullLineData{moveListData[1]});
 	vectorOfLines.push_back(fullLineData{moveListData[2]});
 	vectorOfLines.push_back(fullLineData{moveListData[3]});
 	vectorOfLines.push_back(fullLineData{moveListData[4]});
 	vectorOfLines.push_back(fullLineData{moveListData[5]});
 
+
+
 	sortByDamage(vectorOfLines);
 
-
+/*
 for(auto & singleLine : moveListData)
 	{
     	if(singleLine[8] == "Power crush")
@@ -543,7 +539,7 @@ for (auto & singleLine : moveListData)
     	}
     	delete ragePtr;
   }
-
+ */
     std::getchar();
     return 0;
 }
